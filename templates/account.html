@@ -1,0 +1,485 @@
+
+{% extends "base.html" %}
+{% block title %}NXTHEN- My Account{% endblock %}
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+{% from "includes/_formHelper.html" import render_field %}
+<div class="accountsettings">
+    <h4 class="pb-4 border-bottom" style="color:white;">Account settings</h4>
+        <div class="pl-sm-4 pl-2" id="img-section"> <b>Profile Photo: </b>
+            <br>
+            <br>
+                   <img class="rounded-circle account-img" src="{{ image_file }}" width="150px" height="150px">
+
+
+    <div class="py-2">
+        <div class="row py-2">
+            <div class="col-md-6"> <label for="firstname">First Name</label>  <input name="readonly" class="bg-light form-control" placeholder="{{ current_user.first_name }}" readonly></div>
+            <div class="col-md-6 pt-md-0 pt-3"> <label for="lastname">Last Name</label> <input name="readonly" class="bg-light form-control" placeholder="{{ current_user.last_name }}" readonly></div>
+        </div>
+        <div class="row py-2">
+            <div class="col-md-6"> <label for="email">Email Address</label>  <input name="readonly" class="bg-light form-control" placeholder="{{ current_user.email }}" readonly></div>
+            <div class="col-md-6 pt-md-0 pt-3"> <label for="password">Password</label> <input name="readonly" class="bg-light form-control" placeholder="*******" readonly></div>
+        </div>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+Edit Profile</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form action="{{ url_for('account') }}" method="POST" enctype="multipart/form-data">
+              {{ form.hidden_tag() }}
+              <div class="form-group">
+                  {{ form.first_name.label(class="form-control-label") }}
+                  {% if form.first_name.errors %}
+                  {{ form.first_name(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.first_name.errors %}
+                      <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+                  {% else %}
+                {{ form.first_name(class="form-control") }}
+                  {% endif %}
+              </div>
+              <div class="form-group">
+                  {{ form.last_name.label(class="form-control-label") }}
+                  {% if form.last_name.errors %}
+                  {{ form.last_name(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.last_name.errors %}
+                      <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+                  {% else %}
+                  {{ form.last_name(class="form-control") }}
+                  {% endif %}
+              </div>
+              <div class="form-group">
+                  {{ form.email.label(class="form-control-label") }}
+                  {% if form.email.errors %}
+                  {{ form.email(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.email.errors %}
+                      <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+                  {% else %}
+                  {{ form.email(class="form-control") }}
+                  {% endif %}
+              </div>
+
+              <div class="form-group">
+                  {{ form.password.label(class="form-control-label") }}
+                  {% if form.password.errors %}
+                  {{ form.password(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.password.errors %}
+                      <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+                  {% else %}
+                  {{ form.password(class="form-control") }}
+                  {% endif %}
+              </div>
+              <div class="form-group">
+                  {{ form.confirm.label(class="form-control-label") }}
+                  {% if form.confirm.errors %}
+                  {{ form.confirm(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.confirm.errors %}
+                      <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+                  {% else %}
+                  {{ form.confirm(class="form-control") }}
+                  {% endif %}
+              </div>
+               <div class="form-group">
+                    {{ form.picture.label() }}
+                    {{ form.picture(class="form-control-file") }}
+                    {% if form.picture.errors %}
+                        {% for error in form.picture.errors %}
+                            <span class="text-danger">{{ error }}</span></br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+              <br>
+              <div class="form-group">
+                  {{ form.edit_submit(class="btn btn-primary") }}
+
+              </div>
+          </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+        <div class="d-sm-flex align-items-center pt-3" id="deactivate">
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModalCenter">
+  Delete account
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLongTitle">Delete Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        Are you sure you would like to delete {{current_user.first_name}}  {{current_user.last_name}} 's account?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <a href="{{ url_for('delete_account', id=current_user.id) }}">
+        <button type="button" name="submit_button" value="Delete" class="btn btn-danger">Confirm</button>
+            </a>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% if form.errors %}
+
+<script>
+$('#exampleModal').modal('show');
+</script>
+
+{% endif %}
+        </div>
+<br/><br/>
+<div class="accountsettings">
+    <h4 class="pb-4 border-bottom" style="color:white">Reviews</h4>
+    <p>Want to view your past reviews? Click the button below.</p>
+    <div class="container">
+        <button class="btn reviewBtn">
+            <a href="/retrieveBooking&Review" style="color:black; text-decoration:none; font-weight:500">Reviews</a>
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block style %}
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+.reviewBtn{
+background-color: #47E10C;
+color: black;
+margin-left:-15px;
+}
+h1,h5{
+color:#47E10C;
+text-align:center;
+font-family: 'Poppins', sans-serif;
+}
+h4,p{
+color:white;
+font-family: 'Poppins', sans-serif;
+}
+body{
+background-color:black;
+font-family: 'Poppins', sans-serif;
+font-weight: 300;
+font-size: 15px;
+line-height: 1.7;
+color:white;
+background-color: black;
+overflow-x: hidden;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+h5 {
+    color:black;
+}
+
+h1 {
+    text-align:center;
+}
+.footer-dark {
+  padding:50px 0;
+  color:#f0f9ff;
+  background-color:#282d32;
+}
+
+.footer-dark h3 {
+  margin-top:0;
+  margin-bottom:12px;
+  font-weight:bold;
+  font-size:16px;
+}
+
+.footer-dark ul {
+  padding:0;
+  list-style:none;
+  line-height:1.6;
+  font-size:14px;
+  margin-bottom:0;
+}
+
+.footer-dark ul a {
+  color:inherit;
+  text-decoration:none;
+  opacity:0.6;
+}
+
+.footer-dark ul a:hover {
+  opacity:0.8;
+}
+
+@media (max-width:767px) {
+  .footer-dark .item:not(.social) {
+    text-align:center;
+    padding-bottom:20px;
+  }
+}
+
+.footer-dark .item.text {
+  margin-bottom:36px;
+}
+
+@media (max-width:767px) {
+  .footer-dark .item.text {
+    margin-bottom:0;
+  }
+}
+
+.footer-dark .item.text p {
+  opacity:0.6;
+  margin-bottom:0;
+}
+
+.footer-dark .item.social {
+  text-align:center;
+}
+
+@media (max-width:991px) {
+  .footer-dark .item.social {
+    text-align:center;
+    margin-top:20px;
+  }
+}
+
+.footer-dark .item.social > a {
+  font-size:20px;
+  width:36px;
+  height:36px;
+  line-height:36px;
+  display:inline-block;
+  text-align:center;
+  border-radius:50%;
+  box-shadow:0 0 0 1px rgba(255,255,255,0.4);
+  margin:0 8px;
+  color:#fff;
+  opacity:0.75;
+}
+
+.footer-dark .item.social > a:hover {
+  opacity:0.9;
+}
+
+.footer-dark .copyright {
+  text-align:center;
+  padding-top:24px;
+  opacity:0.3;
+  font-size:13px;
+  margin-bottom:0;
+}
+#tooplate_main {
+    clear: both;
+    width: 960px;
+    padding: 60px 0 20px
+}
+.col_fw_last {
+	padding-bottom: 20px;
+}
+.col_allw300 {
+	float: left;
+	width: 300px;
+	margin-right: 30px;
+}
+.fp_service {
+	width: 280px;
+	background: #262424;
+	border: 1px solid #333232;
+	padding: 9px 9px 4px;
+	color: #ccc;
+}
+
+.fp_service_box {
+	padding: 10px 10px 0;
+	margin-bottom: 5px;
+}
+
+.fp_service_box p {
+	float: right;
+	width: 185px;
+	font-size: 11px;
+}
+
+.fp_service_box a {
+	display: block;
+	font-size: 16px;
+	color: #fff;
+	font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.fp_service_box img {
+	float: left;
+}
+.cleaner { clear: both }
+.h10 { height: 10px }
+.h20 { height: 20px }
+.h30 { height: 30px }
+.h40 { height: 40px }
+.h50 { height: 50px }
+.h60 { height: 60px }
+
+.float_l { float: left }
+.float_r { float: right }
+
+img{
+	margin:0;
+	padding:0;
+	border:none;
+}
+.main_content_demo{
+	margin:0 auto;
+	padding:0;
+	width:900px;
+	display:block;
+}
+
+.fp_c1 {
+	background: #868686;
+}
+
+.fp_c2 {
+	background: #6f6f6f;
+}
+
+.fp_c3 {
+	background: #545454;
+}
+
+.fp_c4 {
+	background: #3a3a3a;
+}
+
+.fp_lp {
+	font-size: 11px;
+	font-weight: 700;
+	text-align: center;
+}
+
+.fp_lp img {
+	border-bottom: 5px solid #fff;
+}
+#tooplate_body_wrapper {
+	width: 100%;
+	background: url(images/tooplate_top.jpg) repeat-x top
+}
+#tooplate_wrapper {
+	margin: 0 auto;
+	padding: 0 10px;
+	width: 960px;
+}
+.col_fw {
+	margin-bottom: 40px;
+	padding-bottom: 30px;
+	border-bottom: 1px solid #a3a3a3;
+}
+
+.col_w460 {
+	width: 460px;
+}
+
+.col_w300 {
+	width: 300px;
+}
+
+.col_w240 {
+	float: left;
+	width: 220px;
+	padding-right: 20px;
+}
+
+.col_w630 {
+	width: 630px;
+}
+
+.col_rm {
+	margin: 0;
+}
+.tooplate_list {
+	margin: 15px 0 15px 15px;
+	padding: 0;
+	list-style: none;
+}
+
+.tooplate_list li {
+	color:#fff;
+	margin: 0 0 5px 0;
+	padding: 0 0 0 20px;
+	background: url(images/tooplate_list.png) no-repeat scroll 0 7px;
+}
+
+.tooplate_list li a {
+	font-weight: normal;
+}
+
+.tooplate_list li a:hover {
+	color: #fff;
+}
+.image_frame {
+	background: #262424;
+	border: 1px solid #333232;
+	padding: 9px;
+}
+h1, h2, h3, h4, h5, h6 { color: #e5a923; font-weight: normal; 	font-family: Tahoma, Geneva, sans-serif }
+h1 { font-size: 48px; margin: 0 0 30px; padding: 5px 0 }
+h2 { font-size: 30px; margin: 0 0 25px; padding: 5px 0; }
+h3 { font-size: 36px; margin: 0 0 20px; padding: 0; }
+h4 { font-size: 22px; margin: 0 0 15px; padding: 0; }
+h5 { font-size: 18px; margin: 0 0 10px; padding: 0;  }
+h6 { font-size: 13px; margin: 0 0 5px; padding: 0; }
+p {
+	margin: 0 0 10px 0;
+	padding: 0;
+}
+
+body{
+background-color:black;
+}
+.accountsettings{
+background-color:black;
+color:white;
+}
+.modal-body{
+color:black;
+}
+.modal-title{
+color:black;
+}
+
+{% endblock %}

@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{% block title %}NXTHEN - Order Placed {% endblock %}
+
+{% block style %}
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+h1,h5{
+color:#47E10C;
+text-align:center;
+}
+h4,p{
+color:white;
+}
+body{
+background-color:black;
+font-family: 'Poppins', sans-serif;
+font-weight: 300;
+font-size: 15px;
+line-height: 1.7;
+color:white;
+background-color: black;
+overflow-x: hidden;
+}
+.card {
+    margin: auto;
+    width: 38%;
+    max-width: 600px;
+    padding: 4vh 0;
+    box-shadow: #47E10C;
+    border-top: 5px solid #47E10C;
+    border-bottom: 5px solid #47E10C;
+    border-left: none;
+    border-right: none;
+}
+@media(max-width:768px) {
+    .card {
+        width: 90%
+    }
+}
+.title {
+    color: white;
+    font-weight: 600;
+    margin-bottom: 2vh;
+    padding: 0 8%;
+    font-size: initial
+}
+#details {
+    font-weight: 400
+}
+.info {
+    padding: 5% 8%
+}
+.info .col-5 {
+    padding: 0
+}
+#heading {
+    color: grey;
+    line-height: 6vh
+}
+.pricing {
+    background-color: #ddd3;
+    padding: 2vh 8%;
+    font-weight: 400;
+    line-height: 2.5
+}
+.pricing .col-3 {
+    padding: 0
+}
+.total {
+    padding: 2vh 8%;
+    color: rgb(252, 103, 49);
+    font-weight: bold
+}
+.total .col-3 {
+    padding: 0
+}
+.footer {
+    padding: 0 8%;
+    font-size: x-small;
+    color: black
+}
+.footer img {
+    height: 5vh;
+    opacity: 0.2
+}
+.footer a {
+    color: rgb(252, 103, 49)
+}
+.footer .col-10,
+.col-2 {
+    display: flex;
+    padding: 3vh 0 0;
+    align-items: center
+}
+.footer .row {
+    margin: 0
+}
+#progressbar {
+    margin-bottom: 3vh;
+    overflow: hidden;
+    color: #47E10C;
+    padding-left: 0px;
+    margin-top: 3vh
+}
+#progressbar li {
+    list-style-type: none;
+    font-size: x-small;
+    width: 25%;
+    float: left;
+    position: relative;
+    font-weight: 400;
+    color: rgb(160, 159, 159)
+}
+#progressbar #step1:before {
+    content: "";
+    color: rgb(252, 103, 49);
+    width: 5px;
+    height: 5px;
+    margin-left: 0px !important
+}
+#progressbar #step2:before {
+    content: "";
+    color: #fff;
+    width: 5px;
+    height: 5px;
+    margin-left: 32%
+}
+#progressbar #step3:before {
+    content: "";
+    color: #fff;
+    width: 5px;
+    height: 5px;
+    margin-right: 32%
+}
+#progressbar #step4:before {
+    content: "";
+    color: #fff;
+    width: 5px;
+    height: 5px;
+    margin-right: 0px !important
+}
+#progressbar li:before {
+    line-height: 29px;
+    display: block;
+    font-size: 12px;
+    background: #ddd;
+    border-radius: 50%;
+    margin: auto;
+    z-index: -1;
+    margin-bottom: 1vh
+}
+#progressbar li:after {
+    content: '';
+    height: 2px;
+    background: #ddd;
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    margin-bottom: 2vh;
+    top: 1px;
+    z-index: 1
+}
+.progress-track {
+    padding: 0 8%
+}
+#progressbar li:nth-child(2):after {
+    margin-right: auto
+}
+#progressbar li:nth-child(1):after {
+    margin: auto
+}
+#progressbar li:nth-child(3):after {
+    float: left;
+    width: 68%
+}
+#progressbar li:nth-child(4):after {
+    margin-left: auto;
+    width: 132%
+}
+#progressbar li.active {
+    color: black
+}
+#progressbar li.active:before,
+#progressbar li.active:after {
+    background: #47E10C;
+}
+{% endblock %}
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<div class="card" style="background-color:#1E1E1E">
+    <div class="title">Purchase Reciept</div>
+    <div class="info">
+        <div class="row">
+            <p style="color:white; margin-left: 10px">Thank you for shopping with NXTHEN! </p>
+        </div>
+        <div class="row">
+            <p style="color:white; margin-left: 10px">To return to the store's homepage,
+                <a href="{{ url_for('home') }}" style="color:white; text-decoration:underline">click here.</a>
+            </p>
+        </div>
+    </div>
+    <div class="tracking">
+        <div class="title">Order Tracking</div>
+    </div>
+    <div class="progress-track" style="color:white">
+        <ul id="progressbar" >
+            <li class="step0 active" id="step1" style="color:white">Ordered</li>
+            <li class="step0 active text-center" id="step2" style="color:white">Shipped</li>
+            <li class="step0 active text-right" id="step3" style="color:white">On the way</li>
+            <li class="step0 text-right" id="step4" style="color:white">Delivered</li>
+        </ul>
+    </div>
+    <div class="footer">
+        <div class="row">
+            <div class="col-10" style="font-size:14px; color:white">Need any help?<span style="color:black">.</span>
+                <a href="{{ url_for('contact_us') }}" style="color:white; text-decoration:underline"> Contact us here.</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+

@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% block title %}NXTHEN - My Cart {% endblock %}
+
+{% block style %}
+body {
+  font-family: Arial;
+  font-size: 15px;
+  padding: 8px;
+  background-color:black;
+  color:white;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.row {
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  -ms-flex-wrap: wrap; /* IE10 */
+  flex-wrap: wrap;
+  margin: 0 -16px;
+}
+
+.col-25 {
+  -ms-flex: 25%; /* IE10 */
+  flex: 25%;
+}
+
+.col-50 {
+  -ms-flex: 50%; /* IE10 */
+  flex: 50%;
+}
+
+.col-75 {
+  -ms-flex: 75%; /* IE10 */
+  flex: 75%;
+}
+
+.col-25,
+.col-50,
+.col-75 {
+  padding: 0 16px;
+}
+
+.container {
+  padding: 5px 20px 15px 20px;
+  border-radius: 3px;
+}
+.cart-container {
+  padding: 5px 20px 15px 20px;
+  border-radius: 3px;
+  border: 1px solid lightgrey;
+}
+input[type=text] {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+label {
+  margin-bottom: 10px;
+  display: block;
+}
+
+.icon-container {
+  margin-bottom: 20px;
+  padding: 7px 0;
+  font-size: 24px;
+}
+
+.checkout-btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  width: 100%;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.btn:hover {
+  background-color: #45a049;
+}
+
+a {
+  color: #2196F3;
+}
+
+hr {
+  border: 1px solid lightgrey;
+}
+
+span.price {
+  float: right;
+  color: grey;
+}
+
+span.quantity{
+  clear: right;
+}
+=
+{% endblock %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<h2 class="pb-4 border-bottom" style="color:white; font-weight:bold">Checkout Page</h2>
+<div class="row">
+  <div class="col-75">
+    <div class="container">
+
+        <div class="row" style="margin-left:-30px">
+          <div class="col-50">
+            <h3 style="margin-bottom:43px">Billing Address</h3>
+            <form action="{{ url_for('payment_page') }}" method="POST">
+             <div class="form-group">
+                  {{ form.name.label(class="form-control-label") }}
+                  {{ form.name(class="form-control") }}
+                  </div>
+             <div class="form-group">
+                  {{ form.email.label(class="form-control-label") }}
+                  {{ form.email(class="form-control") }}
+                  </div>
+             <div class="form-group">
+                  {{ form.address.label(class="form-control-label") }}
+                  {{ form.address(class="form-control") }}
+                  </div>
+            <div class="row">
+              <div class="col-50">
+             <div class="form-group">
+                  {{ form.zip.label(class="form-control-label") }}
+                  {{ form.zip(class="form-control") }}
+                  </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-50">
+            <h3>Payment</h3>
+            <label for="fname">Accepted Cards
+                <span style="color:black">.</span>
+                <i class="fa fa-cc-visa" style="color:#1A1F71; font-size:20px"></i>
+                <i class="fa fa-cc-amex" style="color:#6CC4EE; font-size:20px"></i>
+                <i class="fa fa-cc-mastercard" style="color:#EB001B; font-size:20px"></i>
+                <i class="fa fa-cc-discover" style="color:orange; font-size:20px"></i>
+            </label>
+             <div class="form-group">
+                  {{ form.card_name.label(class="form-control-label") }}
+                  {{ form.card_name(class="form-control") }}
+                  </div>
+             <div class="form-group">
+                  {{ form.card_number.label(class="form-control-label") }}
+                  {{ form.card_number(class="form-control") }}
+                  </div>
+             <div class="form-group">
+                  {{ form.month.label(class="form-control-label") }}
+                  {{ form.month(class="form-control") }}
+                  </div>
+            <div class="row">
+              <div class="col-50">
+             <div class="form-group">
+                  {{ form.year.label(class="form-control-label") }}
+                  {{ form.year(class="form-control") }}
+                  </div>
+              </div>
+              <div class="col-50">
+             <div class="form-group">
+                  {{ form.card_cvv.label(class="form-control-label") }}
+                  {{ form.card_cvv(class="form-control") }}
+                  </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <label style="margin-left:-12px">
+          <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
+        </label>
+        <span style="margin-left:-12px">{{ form.submit(class="checkout-btn") }}</span>
+    </div>
+  </div>
+  </form>
+  <div class="col-25">
+    <div class="cart-container">
+      <h3>Cart <i class="fa fa-shopping-cart"></i> </span></h3>
+      {% for key, product in session['Shoppingcart'].items() %}
+      {% set discount = (product.discount/100) * product.price|float %}
+      <p>{{product.name}} <span class="quantity"> x{{product.quantity}}</span>
+<span class="price">{% if product.discount > 0 %}
+                    {% else %}
+                    {% endif %}
+                    {% set subtotal = product.quantity|int * product.price|float %}
+        {{"%.2f"|format(subtotal|float - discount|float)}}</span></p>
+{% endfor %}
+      <hr>
+      <p>Raw total<span class="price" style="color:white"><b>${{"%.2f"|format(rawtotal)}}</b></span></p>
+      <p>Total discount<span class="price" style="color:red"><b>-${{"%.2f"|format(totaldiscount)}}</b></span></p>
+      <p>Net Total <span class="price" style="color:white"><b>${{"%.2f"|format(grandtotal)}}</b></span></p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

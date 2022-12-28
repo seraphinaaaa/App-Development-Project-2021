@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% block title %}NXTHEN - My Cart {% endblock %}
+
+{% block style %}
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+h1,h5{
+color:#47E10C;
+text-align:center;
+}
+h4,p{
+color:white;
+}
+body{
+background-color:black;
+font-family: 'Poppins', sans-serif;
+font-weight: 300;
+font-size: 15px;
+line-height: 1.7;
+color:white;
+background-color: black;
+overflow-x: hidden;
+}
+.summary {
+  background-color: #1E1E1E;
+  border: 1px solid #aaa;
+  padding: 1rem;
+  width: 250px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.summary-total-items {
+  color: white;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.summary-subtotal,
+.summary-total {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  clear: both;
+  margin: 1rem 0;
+  overflow: hidden;
+  padding: 0.5rem 0;
+}
+
+.subtotal-title,
+.subtotal-value,
+.total-title,
+.total-value,
+.promo-title,
+.promo-value {
+  color: white;
+  float: left;
+  width: 50%;
+}
+
+.summary-promo {
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+}
+
+.promo-title {
+  float: left;
+  width: 70%;
+}
+
+.promo-value {
+  color: red;
+  float: left;
+  text-align: right;
+  width: 30%;
+}
+
+.summary-delivery {
+  padding-bottom: 3rem;
+}
+
+.subtotal-value,
+.total-value {
+  text-align: right;
+}
+
+.total-title {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.summary-checkout {
+  display: block;
+}
+
+.checkout-cta {
+  display: block;
+  float: none;
+  font-size: 0.75rem;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 0.625rem 0;
+  width: 100%;
+}
+
+.summary-delivery-selection {
+  background-color: #ccc;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  display: block;
+  font-size: 0.625rem;
+  height: 34px;
+  width: 100%;
+}
+.parent {
+  border: 1px solid black;
+  margin: 1rem;
+  padding: 2rem 2rem;
+}
+.child1 {
+    display: inline-block;
+    width:75%;
+}
+.child2 {
+  display: inline-block;
+  padding: 1rem 1rem;
+  vertical-align: middle;
+}
+.submit{
+background-color: #47E10C;
+color: black;
+border:none;
+padding:10px;
+width:100%;
+}
+{% endblock %}
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<h3 class="pb-4 border-bottom" style="color:white">Your Cart</h3>
+<div class="parent">
+<div class="child1" style="margin-left:-15px">
+    <div class="row">
+    <table class="table" style="background-color:#1E1E1E;color:white;">
+    <thead>
+                <th>No.</th>
+                <th>Name</th>
+                <th>Cost</th>
+                <th>Quantity</th>
+                <th>Discount</th>
+                <th>Total</th>
+                <th></th>
+                <th></th>
+            </thead>
+            <tbody>
+            {% for key, product in session['Shoppingcart'].items() %}
+            {% set discount = (product.discount/100) * product.price|float %}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{product.name}}</td>
+                    <form action="{{url_for('updatecart', code=key)}}" method="post">
+                    <td>${{product.price}}</td>
+                    <td> <input type="number" name="quantity" min="1" max="10" value="{{product.quantity}}" style="color:black;"> </td>
+                    {% if product.discount > 0 %}
+                    <td>{{product.discount}} % &nbsp;</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                    {% set subtotal = product.quantity|int * product.price|float %}
+                    <td>{{"%.2f"|format(subtotal|float - discount|float)}}</td>
+                    <td><button type="submit" class="btn btn-sm btn-info">UPDATE</button></td>
+                    </form>
+                    <td><a href="{{url_for('deleteitem', id=key)}}" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="summary child2" style="float:right;">
+        <div class="summary-total-items" style="font-size:12px;"><span class="total-items" ></span> Items in your Bag</div>
+        <div class="summary-subtotal">
+          <div class="subtotal-title">Subtotal</div>
+          <div class="subtotal-value final-value" id="basket-subtotal">$ {{"%.2f"|format(rawtotal)}}</div>
+            <div class="promo-title">Total discount</div>
+            <div class="promo-value final-value" id="basket-promo"> ${{"%.2f"|format(totaldiscount)}} </div>
+        </div>
+        <div class="summary-delivery">
+          <select name="delivery-collection" class="summary-delivery-selection" style="font-size:12px; color:black;">
+              <option value="0" selected="selected">Select Collection or Delivery</option>
+             <option value="collection">Collection</option>
+             <option value="first-class">Royal Mail 1st Class</option>
+             <option value="second-class">Royal Mail 2nd Class</option>
+             <option value="signed-for">Royal Mail Special Delivery</option>
+          </select>
+        </div>
+        <div class="summary-total">
+          <div class="total-title">Total</div>
+          <div class="total-value final-value" id="basket-total">${{"%.2f"|format(grandtotal)}}</div>
+        </div>
+        <div class="summary-checkout">
+                  <a href="{{url_for('payment_page')}}">
+          <button class="submit" style="color:black; font-size:12px;">Go to Secure Checkout</button>
+                  </a>
+        </div>
+<br/>
+<br/>
+<br/>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

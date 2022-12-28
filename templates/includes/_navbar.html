@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+.navbar {
+  width: 100%;
+  background-color: #202020;
+  overflow: auto;
+}
+
+/* Navigation links */
+.navbar a {
+  float: left;
+  padding: 12px;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+  font-size: 16px;
+  width: 13%; /* Four equal-width links. If you have two links, use 50%, and 33.33% for three links, etc.. */
+  text-align: center; /* If you want the text to be centered */
+}
+
+/* Add a background color on mouse-over */
+.navbar a:hover {
+  color:#47E10C;
+  transition: 0.3s;
+
+}
+.navbar a.active:hover {
+  transition: 0.3s;
+  color:#47E10C;
+}
+
+/* Style the current/active link */
+.navbar a.active {
+  color:#47E10C;
+}
+
+/* Add responsiveness - on screens less than 500px, make the navigation links appear on top of each other, instead of next to each other */
+@media screen and (max-width: 500px) {
+  .navbar a {
+    float: none;
+    display: block;
+    width: 100%;
+    text-align: left; /* If you want the text to be left-aligned on small screens */
+  }
+}
+</style>
+</head>
+<body>
+<div class="navbar">
+  <a href="/"><i class="fa fa-fw fa-home"></i> STORE</a>
+  <a href="/contactUs"><i class="fa fa-fw fa-envelope"></i> CONTACT US</a>
+  <a href="/reviewPage"><i class="fa fa-comments-o"></i> REVIEWS</a>
+  <a href="/createBooking"><i class="fa fa-calendar-plus-o"></i> BOOKING</a>
+      {% if current_user.is_admin %}
+    <a href="{{ url_for('dashboard') }}"><i class="fa fa-user-circle-o"></i> DASHBOARD</a>
+    {% elif current_user.is_authenticated %}
+    <a href="{{ url_for('account') }}"><i class="fa fa-user-circle-o"></i> ACCOUNT</a>
+  <a href="#" data-toggle="modal" data-target="#logoutModal">
+    <i class="fa fa-sign-out"></i>LOGOUT
+                                </a>
+
+      <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel" style="color:black">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color:black">X</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color:black">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="{{ url_for('logout') }}" style="margin-right:10px; width:80px; padding:5px">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+  {% else %}
+  <a href="/login"><i class="fa fa-fw fa-user"></i>LOGIN/REGISTER</a>
+  {% endif %}
+  <a href="{{ url_for('getCart') }}"><i class="fa fa-shopping-cart" style="font-size:20px; padding-right:5px"></i>{{session['Shoppingcart']|length }}</a>
+
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,491 @@
+{% extends "base.html" %}
+{% block title %}NXTHEN- Store{% endblock %}
+
+{% block content %}
+
+<h1 style="color:#47E10C">Welcome to NXTHEN store! </h1>
+<p class="text-center" style="color:white; font-size:17px;">All discounts are applied at cart.</p>
+<div class="container1">
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+
+      <br>
+      <div class="carousel-inner">
+      <div class="item active">
+        <img src="https://dlcdnwebimgs.asus.com/gain/8b80c016-12fa-452d-ac03-032f511aedaf/" style="width:500px; height:500px;" class="center">
+      </div>
+
+      <div class="item">
+        <img src="https://www.corsair.com/medias/sys_master/images/images/hf4/h87/9371542257694/-CMW32GX4M2E3200C16-Gallery-Vengeance-RGB-Pro-01.png" style="width:500px; height:500px;" class="center">
+      </div>
+
+      <div class="item">
+        <img src="https://asset.msi.com/resize/image/global/product/product_0_20181008115320_5bbad4b01007e.png62405b38c58fe0f07fcef2367d8a9ba1/600.png" style="width:500px; height:500px;" class="center">
+      </div>
+    </div>
+      <br>
+      <br>
+        <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+</div>
+<br>
+
+<div class="container">
+  <div class="row">
+    {% for product in products %}
+
+    <div class="col-md-3 mt-3">
+      <div class="card" style="width:250px; height:30   0px; background-color:#1E1E1E;">
+        <div class="card-body" style="height:200px">
+            {% if product.stock < 3 %}
+            <p class="text-danger"> Product stock is low</p>
+            {% endif %}
+          {% if product.discount > 0 %}
+          <p class="text-danger"> Discount {{product.discount}} %</p>
+            {% endif %}
+            {% if product.discount == 0 %}
+            <p class="text-dark"> -</p>
+            {% endif %}
+            <h5 class="card-title" style="color:white;">{{product.name}}</h5>
+            <img src="{{ url_for('static', filename='images/' + product.image_file) }}" alt="pic" width="100px" height="88px" class="center">
+
+        </div>
+        <div class="card-footer">
+        <form action="{{url_for('AddCart')}}" method="post">
+                <input type="hidden" name="product_id" value="{{product.id}}">
+                <div class="col-md-12 text-center">
+                    <p class="text-center" style="color:white; font-size:15px;">Price: ${{product.price}}</p>
+                        <button type="submit" class="btn btn-sm" style="background-color:#47E10C; font-size:12px;">ADD TO CART</button>
+                    </div>
+                <input type="hidden" name="quantity" id="" value="1" min="1" max="{{product.stock}}">
+            </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+
+    <div class="container">
+    <div class="row">
+        <div id="Smallchat">
+            <div class=" Layout Layout-open Layout-expand Layout-right" style="opacity: 5;border-radius: 10px; overflow: scroll">
+                <div class="Messenger_messenger">
+                    <div class="Messenger_header" style="background-color:black; color: white">
+                        <h4 class="Messenger_prompt" style="color:white">NXTHEN ChatBot</h4>
+                        <span class="chat_close_icon" style="color:white">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" style="float:right; border:none; background-color:transparent; color:white; font-size:22px; margin-bottom:22px">X</button>
+                        </span>
+                    </div>
+                    <script>
+                      $(document).ready(function(){
+                        $(".chat_on").click(function(){
+                            $(".Layout").toggle();
+                            $(".chat_on").hide(300);
+                        });
+
+                           $(".chat_close_icon").click(function(){
+                            $(".Layout").hide();
+                               $(".chat_on").show(300);
+                        });
+
+                    });
+                    </script>
+                    <div class="Messenger_content">
+                        <div style="color:black">
+                            <main class="msger-chat">
+                                <div class="msg left-msg">
+                                    <div class="msg-img" style="background-image: url(https://icon-library.com/images/ai-icon/ai-icon-7.jpg); width:60px; margin-bottom:35px; margin-top:-10px">
+
+                                    </div>
+
+                                    <div class="msg-bubble" style="color:black; background-color:#D3D3D3">
+                                        <div class="msg-info">
+                                            <div class="msg-info-name">NXTHEN ChatBot</div>
+                                            <div class="msg-info-time">12:45</div>
+                                        </div>
+                                        <div class="msg-text">
+                                            Hello there! What can I help you with today? 😄
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </main>
+                        </div>
+                        <div class="Messages">
+                            <div class="Messages_list"></div>
+                        </div>
+                        <div class="Input Input-blank">
+                            <form class="msger-inputarea">
+                                <input type="text" class="msger-input" id="textInput" placeholder="Enter your message..." style="color:black">
+                                <button type="submit" class="msger-send-btn">Send</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat_on" style="padding-bottom:5px; color:black">
+                <span class="chat_on_icon"><i class="fa fa-comments-o" style="color:black"></i></span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+const msgerForm = get(".msger-inputarea");
+const msgerInput = get(".msger-input");
+const msgerChat = get(".msger-chat");
+
+const BOT_IMG = "https://icon-library.com/images/ai-icon/ai-icon-7.jpg";
+const PERSON_IMG = "https://www.svgrepo.com/show/275245/man-profile.svg";
+const BOT_NAME = "NXTHEN ChatBot";
+const PERSON_NAME = "You";
+
+msgerForm.addEventListener("submit", event => {
+    event.preventDefault();
+      const msgText = msgerInput.value;
+      if (!msgText) return;
+      appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
+      msgerInput.value = "";
+      botResponse(msgText);
+});
+
+function appendMessage(name, img, side, text) {
+const msgHTML = `
+    <div class="msg ${side}-msg">
+        <div class="msg-img" style="background-image: url(${img})"></div>
+        <div class="msg-bubble" style="color:black">
+        <div class="msg-info">
+        <div class="msg-info-name">${name}</div>
+        <div class="msg-info-time">${formatDate(new Date())}</div>
+    </div>
+    <div class="msg-text">${text}</div>
+  </div>
+</div>`;
+
+msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+msgerChat.scrollTop += 500;
+}
+
+function botResponse(rawText) {
+    $.get("/get", { msg: rawText }).done(function (data) {
+        console.log(rawText);
+        console.log(data);
+        const msgText = data;
+        appendMessage(BOT_NAME, BOT_IMG, "left", msgText);
+      });
+    }
+function get(selector, root = document) {
+    return root.querySelector(selector);
+}
+function formatDate(date) {
+    const h = "0" + date.getHours();
+    const m = "0" + date.getMinutes();
+    return `${h.slice(-2)}:${m.slice(-2)}`;
+}
+</script>
+
+{% endblock %}
+
+{% block style %}
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+h1,h5{
+color:#47E10C;
+text-align:center;
+font-family: 'Poppins', sans-serif;
+}
+h4,p{
+color:white;
+font-family: 'Poppins', sans-serif;
+}
+body{
+background-color:black;
+font-family: 'Poppins', sans-serif;
+font-weight: 300;
+font-size: 15px;
+line-height: 1.7;
+color:white;
+background-color: black;
+overflow-x: hidden;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+h5 {
+    color:black;
+}
+
+h1 {
+    text-align:center;
+}
+.footer-dark {
+  padding:50px 0;
+  color:#f0f9ff;
+  background-color:#282d32;
+}
+
+.footer-dark h3 {
+  margin-top:0;
+  margin-bottom:12px;
+  font-weight:bold;
+  font-size:16px;
+}
+
+.footer-dark ul {
+  padding:0;
+  list-style:none;
+  line-height:1.6;
+  font-size:14px;
+  margin-bottom:0;
+}
+
+.footer-dark ul a {
+  color:inherit;
+  text-decoration:none;
+  opacity:0.6;
+}
+
+.footer-dark ul a:hover {
+  opacity:0.8;
+}
+
+@media (max-width:767px) {
+  .footer-dark .item:not(.social) {
+    text-align:center;
+    padding-bottom:20px;
+  }
+}
+
+.footer-dark .item.text {
+  margin-bottom:36px;
+}
+
+@media (max-width:767px) {
+  .footer-dark .item.text {
+    margin-bottom:0;
+  }
+}
+
+.footer-dark .item.text p {
+  opacity:0.6;
+  margin-bottom:0;
+}
+
+.footer-dark .item.social {
+  text-align:center;
+}
+
+@media (max-width:991px) {
+  .footer-dark .item.social {
+    text-align:center;
+    margin-top:20px;
+  }
+}
+
+.footer-dark .item.social > a {
+  font-size:20px;
+  width:36px;
+  height:36px;
+  line-height:36px;
+  display:inline-block;
+  text-align:center;
+  border-radius:50%;
+  box-shadow:0 0 0 1px rgba(255,255,255,0.4);
+  margin:0 8px;
+  color:#fff;
+  opacity:0.75;
+}
+
+.footer-dark .item.social > a:hover {
+  opacity:0.9;
+}
+
+.footer-dark .copyright {
+  text-align:center;
+  padding-top:24px;
+  opacity:0.3;
+  font-size:13px;
+  margin-bottom:0;
+}
+#tooplate_main {
+    clear: both;
+    width: 960px;
+    padding: 60px 0 20px
+}
+.col_fw_last {
+	padding-bottom: 20px;
+}
+.col_allw300 {
+	float: left;
+	width: 300px;
+	margin-right: 30px;
+}
+.fp_service {
+	width: 280px;
+	background: #262424;
+	border: 1px solid #333232;
+	padding: 9px 9px 4px;
+	color: #ccc;
+}
+
+.fp_service_box {
+	padding: 10px 10px 0;
+	margin-bottom: 5px;
+}
+
+.fp_service_box p {
+	float: right;
+	width: 185px;
+	font-size: 11px;
+}
+
+.fp_service_box a {
+	display: block;
+	font-size: 16px;
+	color: #fff;
+	font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.fp_service_box img {
+	float: left;
+}
+.cleaner { clear: both }
+.h10 { height: 10px }
+.h20 { height: 20px }
+.h30 { height: 30px }
+.h40 { height: 40px }
+.h50 { height: 50px }
+.h60 { height: 60px }
+
+.float_l { float: left }
+.float_r { float: right }
+
+img{
+	margin:0;
+	padding:0;
+	border:none;
+}
+.main_content_demo{
+	margin:0 auto;
+	padding:0;
+	width:900px;
+	display:block;
+}
+
+.fp_c1 {
+	background: #868686;
+}
+
+.fp_c2 {
+	background: #6f6f6f;
+}
+
+.fp_c3 {
+	background: #545454;
+}
+
+.fp_c4 {
+	background: #3a3a3a;
+}
+
+.fp_lp {
+	font-size: 11px;
+	font-weight: 700;
+	text-align: center;
+}
+
+.fp_lp img {
+	border-bottom: 5px solid #fff;
+}
+#tooplate_body_wrapper {
+	width: 100%;
+	background: url(images/tooplate_top.jpg) repeat-x top
+}
+#tooplate_wrapper {
+	margin: 0 auto;
+	padding: 0 10px;
+	width: 960px;
+}
+.col_fw {
+	margin-bottom: 40px;
+	padding-bottom: 30px;
+	border-bottom: 1px solid #a3a3a3;
+}
+
+.col_w460 {
+	width: 460px;
+}
+
+.col_w300 {
+	width: 300px;
+}
+
+.col_w240 {
+	float: left;
+	width: 220px;
+	padding-right: 20px;
+}
+
+.col_w630 {
+	width: 630px;
+}
+
+.col_rm {
+	margin: 0;
+}
+.tooplate_list {
+	margin: 15px 0 15px 15px;
+	padding: 0;
+	list-style: none;
+}
+
+.tooplate_list li {
+	color:#fff;
+	margin: 0 0 5px 0;
+	padding: 0 0 0 20px;
+	background: url(images/tooplate_list.png) no-repeat scroll 0 7px;
+}
+
+.tooplate_list li a {
+	font-weight: normal;
+}
+
+.tooplate_list li a:hover {
+	color: #fff;
+}
+.image_frame {
+	background: #262424;
+	border: 1px solid #333232;
+	padding: 9px;
+}
+h1, h2, h3, h4, h5, h6 { color: #e5a923; font-weight: normal; 	font-family: Tahoma, Geneva, sans-serif }
+h1 { font-size: 48px; margin: 0 0 30px; padding: 5px 0 }
+h2 { font-size: 30px; margin: 0 0 25px; padding: 5px 0; }
+h3 { font-size: 36px; margin: 0 0 20px; padding: 0; }
+h4 { font-size: 22px; margin: 0 0 15px; padding: 0; }
+h5 { font-size: 18px; margin: 0 0 10px; padding: 0;  }
+h6 { font-size: 13px; margin: 0 0 5px; padding: 0; }
+p {
+	margin: 0 0 10px 0;
+	padding: 0;
+}
+{% endblock %}
+
+

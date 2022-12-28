@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}NXTHEN - Contact Us{% endblock %}
+
+{% block style %}
+* {
+font-family: 'Poppins', sans-serif;
+color: white;
+}
+h1{
+color:#47E10C;
+text-align:center;
+}
+h4,p,h5{
+color:white;
+}
+body{
+background-color:black;
+}
+.reviewContainer{
+background-color:#1A1A1A;
+
+}
+.reviewBtn{
+background-color: #47E10C;
+color: black;
+font-weight: 600;
+float: right;
+margin-bottom: 50px;
+}
+span{
+color: white;
+}
+.form-group {
+font-size: 18px;
+}
+{% endblock %}
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<div class="container text-center">
+    <h1 style="font-weight:600;">Customer Support</h1>
+    <h4 style="font-weight:600;">Our team will respond to you within 3-5 working days</h4>
+</div>
+<br/>
+
+<h3 style="color:white">Customer Support Form</h3>
+<hr>
+
+<div class="p-4 rounded" style="background-color:#303030">
+    <div class="p-4">
+        <form method="POST" action="">
+            <fieldset>
+                <div class="form-group" style="font-size:15px;">
+                    {{form.first_name.label(class="form-control-label")}}
+                    {{form.first_name(class="form-control")}}
+                </div>
+                <div class="form-group"style="font-size:15px;">
+                    {{form.last_name.label(class="form-control-label")}}
+                    {{form.last_name(class="form-control")}}
+                </div>
+                <div class="form-group"style="font-size:15px;">
+                    {{form.email.label(class="form-control-label")}}
+                    {{form.email(class="form-control")}}
+                </div>
+                <div class="form-group"style="font-size:15px;">
+                    {{form.issue.label(class="form-control-label")}}
+                    {{form.issue(class="form-control")}}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{form.submit(class="btn reviewBtn")}}
+            </div>
+            <br/>
+        </form>
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='message') }}
+    </div>
+</div>
+{% endblock %}
+

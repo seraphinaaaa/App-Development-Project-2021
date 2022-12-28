@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        {% block style %}
+        @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+
+        h1{
+        text-align:center;
+        }
+        body{
+        background-color:black;
+        color:white;
+        }
+
+        {% endblock %}
+
+
+    </style>
+</head>
+<body>
+<header>
+    {% block navbar %}
+    {% include 'includes/_navbar.html' %}
+    {% endblock %}
+</header>
+<main role="main" class="container">
+  <div class="row align-items-center">
+    <div class="col align-self-center">
+      <br>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+                  </button>
+                </div>
+              {% endfor %}
+
+            {% endif %}
+          {% endwith %}
+        {% block content %} {% endblock %}
+
+        </div>
+      </div>
+  <br>
+  </main>
+
+{% block footer %}
+<!-- Footer -->
+<footer class="text-center text-lg-start text-muted" style="background-color:#1A1A1A;">
+  <!-- Section: Social media -->
+  <section
+    class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
+  >
+
+  </section>
+  <!-- Section: Social media -->
+
+  <!-- Section: Links  -->
+  <section class="">
+    <div class="container text-center text-md-start mt-5" style="color:white">
+      <!-- Grid row -->
+      <div class="row mt-3">
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+          <!-- Content -->
+          <h6 class="text-uppercase fw-bold mb-4" style="color:#47E10C;">
+          NXTHEN
+          </h6>
+          <p>
+           We provide the best quality and newest stocks of GPU, CPU and RAM that are hot in the market at the moment. We also provide services for assembling of PC or repairing PC. We hope you enjoy your experience with NXTHEN!
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4" style="color:white">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4"style="color:#47E10C;">
+            Services
+          </h6>
+          <p>
+            <a href="{{url_for('create_booking')}}" class="text-reset"> Bookings</a>
+          </p>
+          <p>
+            <a href="{{url_for('review_page')}}" class="text-reset">Reviews</a>
+          </p>
+          <p>
+            <a href="{{url_for('contact_us')}}" class="text-reset">Contact Us</a>
+          </p>
+          <p>
+            <a href="{{url_for('account')}}" class="text-reset">Account</a>
+          </p>
+        </div>
+        <!-- Grid column -->
+
+
+
+        <!-- Grid column -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4" style="color:white">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4 "style="color:#47E10C;">
+            Contact
+          </h6>
+          <p><i class="fa fa-map-marker"></i> Singapore, SG </p>
+          <p>
+            <i class="fa fa-envelope-o"></i>
+nxthen@pc.com
+          </p>
+          <p><i class="fa fa-phone"></i> + 12345678</p>
+        </div>
+        <!-- Grid column -->
+      </div>
+      <!-- Grid row -->
+    </div>
+  </section>
+  <!-- Section: Links  -->
+  <!-- Copyright -->
+  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05); color:grey">
+    © 2021 Copyright NXTHEN
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+{% endblock %}
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!--    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
